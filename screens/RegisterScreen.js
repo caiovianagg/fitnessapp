@@ -1,65 +1,75 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
-import { auth, createUserWithEmailAndPassword } from '../firebaseConfig'; 
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const navigation = useNavigation();
 
-  const handleRegister = async () => {
-    if (password !== confirmPassword) {
-      alert('As senhas não coincidem.');
+  const handleRegister = () => {
+    if (!email || !password || !confirmPassword) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
-    try {
-        await createUserWithEmailAndPassword(auth, email, password);  
-        Alert.alert('Cadastro realizado com sucesso!');
-        navigation.navigate('Login');  
-      } catch (error) {
-        Alert.alert('Email já existe', error.message);
-      }
+    if (password !== confirmPassword) {
+      Alert.alert('Erro', 'As senhas não coincidem.');
+      return;
+    }
+
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        Alert.alert('Sucesso', 'Conta criada com sucesso!');
+        navigation.replace('Login'); 
+      })
+      .catch((error) => {
+        let message = 'Erro ao criar conta.';
+        if (error.code === 'auth/email-already-in-use') {
+          message = 'Este e-mail já está em uso.';
+        } else if (error.code === 'auth/weak-password') {
+          message = 'A senha deve ter pelo menos 6 caracteres.';
+        }
+        Alert.alert('Erro', message);
+      });
   };
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/images/logoestacio.png')} style={styles.logo} />
-      <Text style={styles.title}>Criar Conta</Text>
+      <Text style={styles.title}>Cadastro</Text>
 
       <TextInput
-        placeholder="Email"
-        placeholderTextColor="#145DA0" 
+        style={styles.input}
+        placeholder="Digite seu e-mail"
+        keyboardType="email-address"
+        autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
-        style={styles.input}
-        keyboardType="email-address"
       />
+
       <TextInput
-        placeholder="Senha"
-        placeholderTextColor="#145DA0"
+        style={styles.input}
+        placeholder="Digite sua senha"
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
-        style={styles.input}
-        secureTextEntry
       />
+
       <TextInput
-        placeholder="Confirmar Senha"
-        placeholderTextColor="#145DA0"
+        style={styles.input}
+        placeholder="Confirme sua senha"
+        secureTextEntry
         value={confirmPassword}
         onChangeText={setConfirmPassword}
-        style={styles.input}
-        secureTextEntry
       />
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Registrar</Text>
+        <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.link}>Já tem uma conta? Faça login</Text>
+        <Text style={styles.linkText}>Já tem uma conta? Faça login aqui</Text>
       </TouchableOpacity>
     </View>
   );

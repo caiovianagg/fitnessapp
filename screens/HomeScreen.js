@@ -1,133 +1,150 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; 
-import profileIcon from '../assets/profile.png'; 
-import HomeStyles from '../styles/HomeStyles';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-import legsImage from '../assets/images/perna1.jpg'; 
-import armsImage from '../assets/images/triceps1.jpg'; 
-import shouldersImage from '../assets/images/ombro1.jpg'; 
-import costaImage from '../assets/images/costa.jpg';
-import tricepsImage from '../assets/images/triceps1.jpg';
-import bicepsImage from '../assets/images/biceps.jpg';
-import breastplateImage from '../assets/images/peito.jpg';
-
-
-const HomeScreen = () => {
-  const navigation = useNavigation();
-
+const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Treinos</Text>
+      <Text style={styles.title}>Exercícios</Text>
 
       <TouchableOpacity
-  style={[HomeStyles.profileButton, { marginTop: 20 }]} 
-  onPress={() => navigation.navigate('UserProfile')}
->
-  <Image source={profileIcon} style={{ width: 30, height: 30 }} />
-</TouchableOpacity>
+        style={styles.profileButton}
+        onPress={() => navigation.navigate('Profile')}
+      >
+        <Image
+          source={require('../assets/images/profile.png')}
+          style={styles.profileIcon}
+        />
+      </TouchableOpacity>
 
-
-      <View style={HomeStyles.buttonContainer}>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={HomeStyles.exerciseButton}
-          onPress={() => navigation.navigate('LegExercises')}
+          style={styles.button}
+          onPress={() => navigation.navigate('ExerciseList', { muscle: 'shoulders' })}
         >
-          <Text style={HomeStyles.buttonText}>Pernas</Text>
-          <Image source={legsImage} style={HomeStyles.exerciseImage} />
+          <Image
+            source={require('../assets/images/ombro.jpg')}
+            style={styles.buttonImage}
+          />
+          <Text style={styles.buttonText}>Ombros</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={HomeStyles.exerciseButton}
-          onPress={() => navigation.navigate('TricepsExercises')}
+          style={styles.button}
+          onPress={() => navigation.navigate('ExerciseList', { muscle: 'arms' })}
         >
-          <Text style={HomeStyles.buttonText}>Tríceps</Text>
-          <Image source={armsImage} style={HomeStyles.exerciseImage} />
-        </TouchableOpacity>
-      </View>
-
-      <View style={HomeStyles.buttonContainer}>
-        <TouchableOpacity
-          style={HomeStyles.exerciseButton}
-          onPress={() => navigation.navigate('ShoulderExercises')}
-        >
-          <Text style={HomeStyles.buttonText}>Ombros</Text>
-          <Image source={shouldersImage} style={HomeStyles.exerciseImage} />
+          <Image
+            source={require('../assets/images/costa.jpg')}
+            style={styles.buttonImage}
+          />
+          <Text style={styles.buttonText}>Costas</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={HomeStyles.exerciseButton}
-          onPress={() => navigation.navigate('CostaExercises')}
+          style={styles.button}
+          onPress={() => navigation.navigate('ExerciseList', { muscle: 'legs' })}
         >
-          <Text style={HomeStyles.buttonText}>Costas</Text>
-          <Image source={costaImage} style={HomeStyles.exerciseImage} />
-        </TouchableOpacity>
-      </View>
-
-      <View style={HomeStyles.buttonContainer}>
-        <TouchableOpacity
-          style={HomeStyles.exerciseButton}
-          onPress={() => navigation.navigate('BicepsExercises')}
-        >
-          <Text style={HomeStyles.buttonText}>Bíceps</Text>
-          <Image source={bicepsImage} style={HomeStyles.exerciseImage} />
+          <Image
+            source={require('../assets/images/perna1.jpg')}
+            style={styles.buttonImage}
+          />
+          <Text style={styles.buttonText}>Pernas</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={HomeStyles.exerciseButton}
-          onPress={() => navigation.navigate('BreastplateExercises')}
+          style={styles.button}
+          onPress={() => navigation.navigate('ExerciseList', { muscle: 'bicep' })}
         >
-          <Text style={HomeStyles.buttonText}>Peito</Text>
-          <Image source={breastplateImage} style={HomeStyles.exerciseImage} />
+          <Image
+            source={require('../assets/images/biceps.jpg')}
+            style={styles.buttonImage}
+          />
+          <Text style={styles.buttonText}>Bíceps</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('ExerciseList', { muscle: 'triceps' })}
+        >
+          <Image
+            source={require('../assets/images/triceps1.jpg')}
+            style={styles.buttonImage}
+          />
+          <Text style={styles.buttonText}>Tríceps</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('ExerciseList', { muscle: 'breastplate' })}
+        >
+          <Image
+            source={require('../assets/images/peito.jpg')}
+            style={styles.buttonImage}
+          />
+          <Text style={styles.buttonText}>Peito</Text>
         </TouchableOpacity>
       </View>
     </View>
-
-
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e6f2ff', 
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f0f0f0',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#00509d', 
     marginBottom: 20,
+    textAlign: 'center',
+    color: '#333',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   button: {
-    backgroundColor: '#00509d', 
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
-    width: '80%',
+    backgroundColor: '#0071BC',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    margin: 10,
+    width: 120,
     alignItems: 'center',
-    borderWidth: 0, 
-    },
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 3,
+  },
   buttonText: {
-    color: '#fff', 
+    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  exerciseButton: {
-    alignItems: 'center',
-    backgroundColor: '#00509d', 
-    padding: 15,
-    borderRadius: 10,
-    width: '40%',
-    marginBottom: 15,
-    borderWidth: 0, 
+  buttonImage: {
+    width: 50,
+    height: 50,
+    marginBottom: 10,
+    borderRadius: 25,
   },
-  exerciseImage: {
-    width: 100,
-    height: 100,
-    marginTop: 10,
-    borderRadius: 10,
+  profileButton: {
+    position: 'absolute',
+    top: 80,
+    right: 10,
+    backgroundColor: '#0071BC',
+    borderRadius: 50,
+    padding: 10,
+    zIndex: 10,
+  },
+  profileIcon: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
   },
 });
 

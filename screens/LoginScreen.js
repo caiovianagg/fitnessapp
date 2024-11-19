@@ -1,53 +1,30 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
-import { auth } from '../firebaseConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import React from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      Alert.alert("Login bem-sucedido!");
-      navigation.navigate('Home'); 
-    } catch (error) {
-      Alert.alert("E-mail ou Senha incorreto!", error.message);
-    }
-  };
-
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/images/logoestacio.png')} style={styles.logo} />
-      <Text style={styles.title}>Bem-vindo de Volta!</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="E-mail"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
+      <Image
+        source={require('../assets/images/logoestacio.png')}
+        style={styles.logo}
       />
       <TextInput
+        placeholder="Email"
         style={styles.input}
+      />
+      <TextInput
         placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
+        style={styles.input}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
-
-      {}
-      <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-        <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('ResetPassword')}>
+        <Text style={styles.link}>Esqueceu sua senha?</Text>
       </TouchableOpacity>
-
-      {}
-      <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
-        <Text style={styles.link}>Não tem uma conta? Cadastre-se</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+        <Text style={styles.link}>Registrar-se</Text>
       </TouchableOpacity>
     </View>
   );
@@ -56,57 +33,43 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E0F7FF',
-    alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 20,
   },
   logo: {
-    width: 150,
-    height: 150,
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#004BA8',
-    marginBottom: 20,
-    textAlign: 'center',
+    width: 200,
+    height: 100,
+    marginBottom: 30,
   },
   input: {
-    width: '100%',
-    height: 50,
-    backgroundColor: '#FFF',
+    width: '80%',
+    padding: 15,
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#0071BC',
     borderRadius: 8,
-    paddingHorizontal: 16,
     fontSize: 16,
     color: '#333',
-    marginBottom: 16,
   },
   button: {
-    width: '100%',
-    height: 50,
-    backgroundColor: '#004BA8',
+    width: '80%',
+    backgroundColor: '#0071BC',
+    paddingVertical: 15,
     borderRadius: 8,
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
+    marginBottom: 10,
   },
   buttonText: {
-    color: '#FFF',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  forgotPasswordText: {
-    color: '#004BA8',
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
   link: {
-    color: '#004BA8',
+    color: '#0071BC',
     fontSize: 16,
-    textAlign: 'center',
+    marginVertical: 5,
   },
 });
 
